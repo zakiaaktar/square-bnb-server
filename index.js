@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 1000;
@@ -55,7 +55,19 @@ async function run() {
         });
 
 
-       
+        app.delete('/api/v1/user/cancel-booking/:bookingId', async (req, res) => {
+            console.log(req.params);
+            const id = req.params.bookingId
+            const query = { _id: new ObjectId(id) }
+            const result = await bookingCollection.deleteOne(query)
+            res.send(result)
+        });
+
+
+        
+
+
+
 
 
 
