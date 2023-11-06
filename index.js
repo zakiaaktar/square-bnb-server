@@ -7,9 +7,11 @@ const port = process.env.PORT || 1000;
 
 
 
-// middle wares
-app.use(cors());
+// parsers
 app.use(express.json());
+app.use(cors());
+
+
 
 //console.log(process.env.DB_PASS)
 
@@ -35,6 +37,7 @@ async function run() {
 
 
         const serviceCollection = client.db('squareBnb').collection('services');
+        const bookingCollection = client.db('squareBnb').collection('bookings');
 
 
 
@@ -45,6 +48,14 @@ async function run() {
         });
 
 
+        app.post('/api/v1/user/create-booking', async (req, res) => {
+            const booking = req.body;
+            const result = await bookingCollection.insertOne(booking)
+            res.send(result)
+        });
+
+
+       
 
 
 
