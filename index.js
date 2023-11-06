@@ -1,11 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 1000;
 
-
+//const secret = 'veryvery'
 
 // parsers
 app.use(express.json());
@@ -64,7 +65,20 @@ async function run() {
         });
 
 
-        
+        app.post('/api/v1/auth/access-token', (req, res) => {
+            // creating token and send to client
+            const user = req.body
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '7d' })
+            //console.log(token);
+            res.cookie('token', {
+                httponly: true,
+                secure: false,
+                sameSite: 'none'
+            }).send({ success: true })
+        })
+
+
+
 
 
 
